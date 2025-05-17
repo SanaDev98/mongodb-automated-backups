@@ -1,0 +1,11 @@
+services:
+  mongodb-backup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - INITIAL_BACKUP=${INITIAL_BACKUP:-false}
+    volumes:
+      - ./backups:/backups
+    restart: unless-stopped
