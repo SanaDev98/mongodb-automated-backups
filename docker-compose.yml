@@ -4,8 +4,15 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - MONGODB_URI=${MONGODB_URI}
+      # Environment variables will be loaded from .env file
+      # Multiple MongoDB connections can be configured as:
+      # - MONGODB_URI_[NAME] for each database (each will get its own backup)
+      # - MONGODB_CONNECTIONS as a JSON string
+      # - MONGODB_URI for backward compatibility (single database)
       - INITIAL_BACKUP=${INITIAL_BACKUP:-false}
+      - DAYS_TO_KEEP=${DAYS_TO_KEEP:-14}
+    env_file:
+      - .env
     volumes:
       - ./backups:/backups
     restart: unless-stopped
